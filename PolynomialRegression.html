@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Polynomial Regression with regression-js</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/regression@2.0.1/dist/regression.min.js"></script>
+</head>
+<body>
+    <canvas id="regressionChart" width="800" height="400"></canvas>
+    <script>
+        // Data points
+        const data = [
+            [1, 100], [2, 90], [3, 80], [5, 60], [6, 60], [7, 55],
+            [8, 65], [9, 70], [10, 70], [12, 75], [13, 76], [14, 78],
+            [15, 79], [16, 90], [18, 99], [19, 99], [21, 100], [22, 120], [27, 130]
+        ];
+
+        // Perform polynomial regression
+        const result = regression.polynomial(data, { order: 3 });
+
+        // Extract original and regression data for plotting
+        const originalData = data.map(point => ({ x: point[0], y: point[1] }));
+        const regressionData = result.points.map(point => ({ x: point[0], y: point[1] }));
+
+        // Plotting
+        const ctx = document.getElementById('regressionChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Original Data',
+                    data: originalData,
+                    backgroundColor: 'rgba(255, 99, 132, 1)'
+                }, {
+                    label: 'Polynomial Regression',
+                    data: regressionData,
+                    type: 'line',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
